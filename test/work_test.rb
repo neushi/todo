@@ -52,17 +52,7 @@ class WorkTest < Minitest::Test   # Testで始まるか、終わるクラス名
   end
 
 # for_whatのリストがダブっていたら例外 とか
-  def test_check(w)
-      assert_instance_of(Work, w.class)
-      assert_instance_of(Integer, w.id.class)
-      refute(0, @name.length)
-      assert_instance_of(Date, @date_created)
-      assert_instance_of(Date, @date_modified)
-      ダブりはとる、ぜんぶ数字でなければだめ
-      fail @for_works = []
-      fail @sub_works = []
-      assert_instance_of(Boolean, @cond_daylight)
-      assert_instance_of(Boolean, @cond_weekday)
+  def test_check
   end
 
 end

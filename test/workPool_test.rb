@@ -26,6 +26,25 @@ class WorkPoolTest < Minitest::Test   # Testで始まるか、終わるクラス
     w_pool.export("test_add_delete")
   end
 
+  def sample_pool1
+    w_pool = WorkPool.new()
+    w_pool.add(Work.new("目的1"))
+    w_pool.add(Work.new("目的11"))
+    w_pool.add(Work.new("目的12"))
+    w_pool.add(Work.new("目的13"))
+    w_pool.add(Work.new("目的111"))
+    w_pool.add(Work.new("目的131"))
+    w_pool.add(Work.new("目的2"))
+    w_pool.add(Work.new("目的21"))
+    w_pool.add(Work.new("目的22"))
+    w_pool.add(Work.new("目的23"))
+    w_pool.add(Work.new("目的3"))
+    w_pool.add(Work.new("目的31"))
+    w_pool.add(Work.new("目的4"))
+    w_pool.add(Work.new("目的a"))
+    w_pool.add(Work.new("目的b"))
+    w_pool.add(Work.new("目的c"))
+  end
   # 削除
   # 関係の追加
   # idがダブっていたら例外
