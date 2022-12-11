@@ -10,14 +10,24 @@ class WorkPoolTest < Minitest::Test   # Testで始まるか、終わるクラス
   end
   
   # 追加、削除、関係追加、
-  # nameがダブっていたら例外
   def test_check
     w_pool = WorkPool.new()
     sample_pool1(w_pool)
     assert_equal("OK", w_pool.check)
+    fail
 
   # exportして確認
     w_pool.export("test_check")
+  end
+
+  # nameがダブっていたら
+  def test_check_names
+    w_pool = WorkPool.new()
+    sample_pool1(w_pool)
+    w_pool.add(Work.new("目的131"))
+    w_pool.add(Work.new("目的131"))
+    w_pool.add(Work.new("目的11"))
+    assert_equal(["目的131", "目的131", "目的11"], w_pool.check_names)
   end
 
   def sample_pool1(w_pool)

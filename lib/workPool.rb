@@ -13,8 +13,15 @@ class WorkPool
 
   def add(work)
     @pool[@next_key] = work
+    connect_reversely(@next_key)
     work.id = @next_key
     @next_key += 1
+  end
+  
+  def connect_reversely(id)
+    @pool[id].for_works.each {|for_id|
+      (@pool[for_id].sub_works << id).uniq!
+    }
   end
 
   def remove(work)
@@ -33,9 +40,42 @@ class WorkPool
   end
 
   def check
-    @pool.each {|work|
+    @pool.each {|id, work|
       return work if work.check != "OK"
     }
+    loop = self.first_loop 
+    return loop unless loop.nil?
+    "OK"
+  end
+
+  def check_names
+    names = []
+    duplicated = []
+    @pool.each {|id, work|
+      if names.member?(work.name) then
+        duplicated << work.name 
+      end
+      names << work.name
+    }
+    duplicated
+  end
+
+  def first_loop # @poolを順に検査して、初めて見つかったloopを返す
+    @pool.each {|id, work|
+      loop = first_loop1(id, [])
+      return loop unless loop.nil?
+    }
+    return nil
+  end
+
+  def first_loop1(id, path) # id からfor_worksを辿ってloopになっていたら、はじめて見つかったものを返す
+    new_path = path.prepend(id)
+    return new_path.uniq if new_path.uniq != new_path 
+    @pool[id].for_works.each {|for_id| 
+      loop = first_loop1(for_id, new_path)
+      return loop if (loop.uniq != loop)
+    }
+    return nil
   end
 
   def export(out_file_name)
