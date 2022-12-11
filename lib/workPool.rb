@@ -32,6 +32,11 @@ class WorkPool
   def leafs
   end
 
+  def check
+    @pool.each {|work|
+      return work if work.check != "OK"
+    }
+  end
 
   def export(out_file_name)
     nodes = Hash.new

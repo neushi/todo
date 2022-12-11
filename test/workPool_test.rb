@@ -8,26 +8,19 @@ class WorkPoolTest < Minitest::Test   # Testで始まるか、終わるクラス
     assert_equal(Hash, w_pool.pool.class)
     assert_equal(0, w_pool.pool.size)
   end
+  
+  # 追加、削除、関係追加、
+  # nameがダブっていたら例外
+  def test_check
+    w_pool = WorkPool.new()
+    sample_pool1(w_pool)
+    assert_equal("OK", w_pool.check)
 
-  # workを追加
-  def test_add_delete
-    w_pool = WorkPool.new() 
-    work1 = Work.new("作業1")
-    work2 = Work.new("作業2")
-    work3 = Work.new("作業3")
-    # IDを確認
-    w_pool.add(work1)
-    assert_equal(1, w_pool.pool.size)
-    # IDを確認
-    w_pool.add(work2)
-    w_pool.add(work3)
-    assert_equal(3, w_pool.pool.size)
   # exportして確認
-    w_pool.export("test_add_delete")
+    w_pool.export("test_check")
   end
 
-  def sample_pool1
-    w_pool = WorkPool.new()
+  def sample_pool1(w_pool)
     w_pool.add(Work.new("目的1"))
     w_pool.add(Work.new("目的11"))
     w_pool.add(Work.new("目的12"))
@@ -45,18 +38,4 @@ class WorkPoolTest < Minitest::Test   # Testで始まるか、終わるクラス
     w_pool.add(Work.new("目的b"))
     w_pool.add(Work.new("目的c"))
   end
-  # 削除
-  # 関係の追加
-  # idがダブっていたら例外
-  # nameがダブっていたら例外
-  # 
-  # 
-  # 
-  # 
-  # 
-  # 
-  # 
-  # 
-  # 
-  # 
 end
