@@ -3,8 +3,6 @@ require "ruby-graphviz"
 
 class WorkPool
   attr_reader :pool
-  # IDのダブりがないこと、
-  # 不在のIDを指していないこと
 
   def initialize
     @next_key = 1
@@ -16,14 +14,14 @@ class WorkPool
     connect_reversely(@next_key)
     work.id = @next_key
     @next_key += 1
-  end
-  
-  def connect_reversely(id)
-    @pool[id].for_works.each {|for_id|
-      (@pool[for_id].sub_works << id).uniq!
-    }
+    return work.id
   end
 
+  def set1_subwork_of2(id1, id2)  # id1はid2のsubwork
+    (@pool[id2].sub_works << id1).uniq!
+    (@pool[id1].for_works << id2).uniq!
+  end
+  
   def remove(work)
   end
 
@@ -45,6 +43,8 @@ class WorkPool
     }
     loop = self.first_loop 
     return loop unless loop.nil?
+  # 不在のIDを指していないこと
+    fail
     "OK"
   end
 
@@ -91,7 +91,6 @@ class WorkPool
         g.add_edges(fn, to_node)
       end
     end
-    g.add_edges( nodes[1], nodes[2] )
     g.output( :png => (out_file_name + ".png" ))
   end
 end
