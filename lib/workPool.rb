@@ -11,7 +11,6 @@ class WorkPool
 
   def add(work)
     @pool[@next_key] = work
-    connect_reversely(@next_key)
     work.id = @next_key
     @next_key += 1
     return work.id
@@ -43,8 +42,13 @@ class WorkPool
     }
     loop = self.first_loop 
     return loop unless loop.nil?
+
   # 不在のIDを指していないこと
-    fail
+    ids_for_works = []
+    @pool.each {|key, work|
+      ids_for_works = ids_for_works + work.for_works
+    }
+    return ids_for_works.uniq! unless (ids_for_works - @pool.keys).empty?
     "OK"
   end
 
@@ -73,22 +77,23 @@ class WorkPool
     return new_path.uniq if new_path.uniq != new_path 
     @pool[id].for_works.each {|for_id| 
       loop = first_loop1(for_id, new_path)
+      next if loop.nil?
       return loop if (loop.uniq != loop)
     }
     return nil
   end
 
   def export(out_file_name)
-    nodes = Hash.new
     g = GraphViz.new( :G, :type => :digraph )
+    nodes = Hash.new
     @pool.each_key do |key|
       nodes[@pool[key].id] = g.add_nodes(@pool[key].name)
     end
     @pool.each_key do |key|
       to_node = nodes[@pool[key].id]
-      from_nodes = @pool[key].sub_works
-      from_nodes.each do |fn|
-        g.add_edges(fn, to_node)
+      from_ids = @pool[key].sub_works
+      from_ids.each do |id|
+        g.add_edges(nodes[id], to_node)
       end
     end
     g.output( :png => (out_file_name + ".png" ))
