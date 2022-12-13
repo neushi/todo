@@ -52,7 +52,7 @@ class WorkPool
     "OK"
   end
 
-  def check_names
+  def check_names # ダブりがあったら、ダブった名前を配列で返す。ダブりがなかったら[]
     names = []
     duplicated = []
     @pool.each {|id, work|

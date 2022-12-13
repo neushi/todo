@@ -12,7 +12,7 @@ class WorkPoolTest < Minitest::Test   # Testで始まるか、終わるクラス
   # 追加、削除、関係追加、
   # 多重追加、多重削除、多重関係追加、
   # 関係先の削除
-  def test_check
+  def test_check # add, set1_subwork_of2もテストしたことにする
     w_pool = WorkPool.new()
     sample_pool1(w_pool)
     assert_equal("OK", w_pool.check)

@@ -69,7 +69,7 @@ class WorkTest < Minitest::Test   # Testで始まるか、終わるクラス名
     assert_equal(345, w.id)
   end
 
-  def test_other_values
+  def test_other_instance_variable
     w = Work.new("namae") 
 
     assert_instance_of(DateTime, w.date_created)

@@ -1,14 +1,15 @@
 require   'date'
 
 class Work
-  attr_accessor :id, :name
+  attr_accessor :id, :name, :tag
   attr_accessor :date_created, :date_modified
   attr_accessor :for_works, :sub_works 
   attr_accessor :work_type, :cond_daylight, :cond_weekday, :due
   
   def initialize(name)
-      @name = name
       @id = 0
+      @name = name
+      @tag # ユーザが自由に゛使って良い分類用のタグ
       @date_created = DateTime.now
       @date_modified = DateTime.now
       @for_works = []
@@ -19,8 +20,8 @@ class Work
       @due = DateTime.new(3000, 1, 1)
   end 
  
-  def check # クラスとダブり
-    return "null name" if @name == nil 
+  def check # クラスとリストのダブり
+    return "nil name" if @name == nil 
     return "empty name" if @name == ""
     return "id:0" if @id == 0
     return "bad id" if @id.class != Integer
